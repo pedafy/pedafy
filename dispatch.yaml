@@ -1,0 +1,7 @@
+dispatch:
+  - url: "pedafy.com/"
+    service: default
+
+  # Send all traffic to service1
+  - url: "*/tig/*"
+    service: tig
