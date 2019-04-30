@@ -2,17 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+
+	"google.golang.org/appengine"
 )
 
 func main() {
 
 	http.HandleFunc("/", hello)
 
-	log.Print("Go server listening on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
-
+	appengine.Main()
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
