@@ -7,6 +7,7 @@ script:
   - go build -o server
   - go clean
 
+# current version of the service: 1.0.0
 deploy:
   provider: gae
   keyfile: pedafy-251c5ecfe2ec.json
