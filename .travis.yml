@@ -13,4 +13,5 @@ deploy:
   project: pedafy
   no_promote: true
   no_stop_previous_version: true
+  version: v1
   on: master
