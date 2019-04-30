@@ -11,4 +11,6 @@ deploy:
   provider: gae
   keyfile: pedafy-251c5ecfe2ec.json
   project: pedafy
+  no_promote: true
+  no_stop_previous_version: true
   on: master
