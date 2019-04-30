@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/appengine"
@@ -9,24 +9,12 @@ import (
 
 func main() {
 
-	http.HandleFunc("/", hello)
+	http.HandleFunc("/", home)
 
 	appengine.Main()
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func home(w http.ResponseWriter, r *http.Request) {
 
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-
-	dictionary := make(map[string]string)
-	dictionary["message"] = "This is the main service! Welcome. It is so cool, isn't it?"
-
-	json, _ := json.Marshal(dictionary)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(json)
-
+	fmt.Fprintf(w, "Coming soon ...")
 }

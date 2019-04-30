@@ -1,7 +1,0 @@
-dispatch:
-  # Send all traffic to service tig
-  - url: "api.pedafy.com/tig/v1/*"
-    service: tig
-
-  - url: "pedafy.com/*"
-    service: default

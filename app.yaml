@@ -1,3 +1,11 @@
+#
+# Pedafy - Default service Version 1
+#
+# An Epitech Innovation Hub project
+#
+# florent.poinsard@epitech.eu
+#
+
 runtime: go
 api_version: go1
 service: default

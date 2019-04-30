@@ -1,18 +1,25 @@
+#
+# Pedafy - Default service Version 1
+#
+# An Epitech Innovation Hub project
+#
+# florent.poinsard@epitech.eu
+#
+
 language: go
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_1387cbe3809d_key -iv $encrypted_1387cbe3809d_iv -in pedafy-251c5ecfe2ec.json.enc -out pedafy-251c5ecfe2ec.json -d
+  - openssl aes-256-cbc -K $encrypted_1387cbe3809d_key -iv $encrypted_1387cbe3809d_iv -in keys/pedafy-251c5ecfe2ec.json.enc -out pedafy-251c5ecfe2ec.json -d
 
 script:
   - go build -o server
   - go clean
 
-# current version of the service: 1.0.0
+# current version of the service: 1
 deploy:
   provider: gae
   keyfile: pedafy-251c5ecfe2ec.json
   project: pedafy
   no_promote: true
   no_stop_previous_version: true
-  version: v1
   on: master
