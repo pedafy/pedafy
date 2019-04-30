@@ -10,5 +10,6 @@ resources:
   disk_size_gb: 10
 
 handlers:
-  - url: /.*
+  - url: .*
     script: _go_app
+    secure: always
