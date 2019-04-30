@@ -22,7 +22,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dictionary := make(map[string]string)
-	dictionary["message"] = "This is the main service! Welcome."
+	dictionary["message"] = "This is the main service! Welcome. It is so cool, isn't it?"
 
 	json, _ := json.Marshal(dictionary)
 
