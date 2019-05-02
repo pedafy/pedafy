@@ -1,5 +1,7 @@
 # Pedafy
 
+[![Build Status](https://travis-ci.com/pedafy/pedafy.svg?branch=master)](https://travis-ci.com/pedafy/pedafy)
+
 Pedafy is a web application allowing Epitech staff to assign "TIG" to students.
 
 ### Version 1
