@@ -14,3 +14,4 @@
 | `/task` | `helper`, `admin` | `all_tasks` |
 | `/task/new` | `helper`, `admin` | `new_task` |
 | `/task/modify/{task_id}` | `helper`, `admin` | `modify_task` |
+| `/login` | `any` | `login` |
