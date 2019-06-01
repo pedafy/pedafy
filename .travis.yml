@@ -12,7 +12,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_1387cbe3809d_key -iv $encrypted_1387cbe3809d_iv -in keys/pedafy-251c5ecfe2ec.json.enc -out pedafy-251c5ecfe2ec.json -d
 
 script:
-  - go build -o server
+  - go build -o server-frontend ./src/app
   - go clean
 
 # current version of the service: 1
