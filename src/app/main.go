@@ -11,6 +11,6 @@ func main() {
 
 	godotenv.Load("../../.env")
 
-	s.RegisterHandlers()
+	s.Start()
 	appengine.Main()
 }

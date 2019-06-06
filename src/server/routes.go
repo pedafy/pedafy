@@ -10,26 +10,8 @@ import (
 	"google.golang.org/appengine"
 )
 
-func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
-}
-
-func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
-}
-
-func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
-	if s.isTokenSet() == false {
-		ctx := appengine.NewContext(r)
-		err := s.fetchTokenAPI(ctx)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-	}
-}
-
-// RegisterHandlers will add all the handlers to the http router
-func (s *Server) RegisterHandlers() {
+// registerHandlers will add all the handlers to the http router
+func (s *Server) registerHandlers() {
 	r := mux.NewRouter()
 
 	r.Methods(http.MethodGet).Path("/_ah/start").HandlerFunc(s.startupHandler)
@@ -49,4 +31,22 @@ func (s *Server) RegisterHandlers() {
 	r.Methods(http.MethodGet).Path("/task/new").HandlerFunc(s.newTaskHandler)
 
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, r))
+}
+
+func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello world"))
+}
+
+func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello world"))
+}
+
+func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
+	if s.isTokenSet() == false {
+		ctx := appengine.NewContext(r)
+		err := s.fetchTokenAPI(ctx)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
 }
