@@ -1,11 +1,13 @@
 package server
 
 import (
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"google.golang.org/appengine"
 )
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,10 +18,21 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello world"))
 }
 
+func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
+	if s.isTokenSet() == false {
+		ctx := appengine.NewContext(r)
+		err := s.fetchTokenAPI(ctx)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+}
 
 // RegisterHandlers will add all the handlers to the http router
 func (s *Server) RegisterHandlers() {
 	r := mux.NewRouter()
+
+	r.Methods(http.MethodGet).Path("/_ah/start").HandlerFunc(s.startupHandler)
 
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
