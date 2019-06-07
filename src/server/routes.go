@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/pedafy/pedafy/src/template"
+
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"google.golang.org/appengine"
@@ -34,7 +36,10 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	err := template.RenderTemplate(w, nil, "home")
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {

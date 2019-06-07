@@ -5,40 +5,35 @@ import (
 	"net/http"
 )
 
-const (
-	// PathTemplate is the relative path to the directory storing
+var (
+	// pathTemplate is the relative path to the directory storing
 	// all the GoHTML files / templates
-	PathTemplate = "./public/template"
+	pathTemplate string
+
+	tmpl *template.Template
 )
 
 // Init will create a new template manager
-func Init() error {
-	return nil
+func Init(templatePath string) error {
+	var err error
+	pathTemplate = templatePath
+	tmpl, err = loadTemplates()
+	return err
 }
 
-func loadSingleTemplate(templateName string) (*template.Template, error) {
-	return template.New(templateName).ParseFiles(CalculPath(templateName))
+func loadTemplates() (*template.Template, error) {
+	return template.ParseGlob(pathTemplate + "/*.gohtml")
 }
 
 // CalculPath returns the relative path of the given template name
 func CalculPath(templateName string) string {
-	return PathTemplate + "/" + templateName + ".gohtml"
-}
-
-// Validate the given template, return a non-nil error if the template is invalid
-func Validate(templateName string) error {
-	_, err := template.New("html-tmpl").ParseFiles(CalculPath(templateName))
-	return err
+	return pathTemplate + "/" + templateName + ".gohtml"
 }
 
 // RenderTemplate renders the given templateName to the given
 // http.responseWritter, data will be send to the template
 func RenderTemplate(w http.ResponseWriter, data interface{}, templateName string) error {
-	tmpl, err := loadSingleTemplate(templateName)
-	if err != nil {
-		return err
-	}
-	err = tmpl.Execute(w, data)
+	err := tmpl.Execute(w, data)
 	if err != nil {
 		return err
 	}
