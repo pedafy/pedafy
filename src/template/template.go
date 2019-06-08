@@ -32,8 +32,8 @@ func CalculPath(templateName string) string {
 
 // RenderTemplate renders the given templateName to the given
 // http.responseWritter, data will be send to the template
-func RenderTemplate(w http.ResponseWriter, data interface{}, templateName string) error {
-	err := tmpl.Execute(w, data)
+func RenderTemplate(w http.ResponseWriter, page Page, templateName string) error {
+	err := tmpl.ExecuteTemplate(w, templateName, page)
 	if err != nil {
 		return err
 	}

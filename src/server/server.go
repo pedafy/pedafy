@@ -22,6 +22,7 @@ type Server struct {
 	TokenAPI         map[serviceName]string
 }
 
+// Start the server by setting all its data
 func (s *Server) Start() {
 	s.registerHandlers()
 	template.Init("../../public/template")

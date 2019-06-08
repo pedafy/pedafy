@@ -36,9 +36,8 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	err := template.RenderTemplate(w, nil, "home")
-	if err != nil {
-		log.Println(err.Error())
+	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Home", nil), "home.gohtml"); err != nil {
+		log.Fatal(err.Error())
 	}
 }
 
