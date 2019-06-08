@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 
+	"github.com/pedafy/pedafy/src/template"
+
 	"github.com/pedafy/pedafy/src/datastore"
 )
 
@@ -18,6 +20,12 @@ const (
 type Server struct {
 	EndpointServices map[serviceName]string
 	TokenAPI         map[serviceName]string
+}
+
+// Start the server by setting all its data
+func (s *Server) Start() {
+	s.registerHandlers()
+	template.Init("../../public/template")
 }
 
 // fetchTokenAPI will request all the API token that are needed
