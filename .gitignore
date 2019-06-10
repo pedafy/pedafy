@@ -14,3 +14,9 @@
 # dev
 .idea
 .env
+
+# assets
+public/js/materialize.js
+public/js/materialize.min.js
+public/css/materialize.css
+public/css/materialize.min.css
