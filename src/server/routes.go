@@ -16,6 +16,8 @@ import (
 func (s *Server) registerHandlers() {
 	r := mux.NewRouter()
 
+	r.Methods(http.MethodGet).PathPrefix("/public/").HandlerFunc(s.serveStatic)
+
 	r.Methods(http.MethodGet).Path("/_ah/start").HandlerFunc(s.startupHandler)
 
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
