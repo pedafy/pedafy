@@ -12,14 +12,14 @@
             <div class="row center">
                 {{ if .Production }}
                     {{ if eq .LoggedIn false }}
-                        <a href="https://pedafy.com/#main" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
+                        <a href="https://pedafy.com/login" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
                     {{ end  }}
                     {{ if eq .LoggedIn true }}
                         <a href="https://pedafy.com/#main" id="download-button" class="btn-large waves-effect waves-light green">Main page</a>
                     {{ end  }}
                {{ else }}
                     {{ if eq .LoggedIn false }}
-                        <a href="/#main" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
+                        <a href="/login" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
                     {{ end  }}
                     {{ if eq .LoggedIn true }}
                         <a href="/#main" id="download-button" class="btn-large waves-effect waves-light green">Main page</a>
