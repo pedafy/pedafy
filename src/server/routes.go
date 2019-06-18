@@ -39,12 +39,14 @@ func (s *Server) registerHandlers() {
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
 	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Home", nil), "home.gohtml"); err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Login", nil), "login.gohtml"); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
