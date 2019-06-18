@@ -23,6 +23,9 @@ func (s *Server) registerHandlers() {
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
 
+	// OAuth
+	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler)
+
 	r.Methods(http.MethodGet).Path("/tig").HandlerFunc(s.tigHomeHandler)
 	r.Methods(http.MethodGet).Path("/tig/{id:[0-9]+}").HandlerFunc(s.tigHandler)
 	r.Methods(http.MethodGet).Path("/tig/modify/{id:[0-9]+}").HandlerFunc(s.modifyTigHandler)
@@ -52,8 +55,10 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
 	if s.isTokenSet() == false {
 		ctx := appengine.NewContext(r)
-		err := s.fetchTokenAPI(ctx)
-		if err != nil {
+		if err := s.fetchTokenAPI(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		if err := s.initOauth(ctx); err != nil {
 			log.Fatal(err.Error())
 		}
 	}
