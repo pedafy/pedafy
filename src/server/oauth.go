@@ -4,7 +4,10 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/pedafy/pedafy/src/server/user"
+
 	"github.com/markbates/goth"
+	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/azuread"
 	"google.golang.org/appengine"
 
@@ -38,12 +41,9 @@ func (s *Server) setOauthProvider() {
 }
 
 func (s *Server) loginOauthHandler(w http.ResponseWriter, r *http.Request) {
-	// Deprecated
-	// Google App Engine does not allow to do direct http.Get()/Post() request
-	//
-	// user, err := gothic.CompleteUserAuth(w, r)
-	// if err != nil {
-	// 	http.Error(w, err.Error(), http.StatusServiceUnavailable)
-	// }
-	// fmt.Fprintln(w, user)
+	authUser, err := gothic.CompleteUserAuth(w, r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusServiceUnavailable)
+	}
+	user.NewUser(w, r, authUser)
 }

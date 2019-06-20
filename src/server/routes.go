@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/pedafy/pedafy/src/server/user"
+
 	"github.com/markbates/goth/gothic"
 
 	"github.com/pedafy/pedafy/src/template"
@@ -24,6 +26,9 @@ func (s *Server) registerHandlers() {
 
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
+
+	// Test
+	r.Methods(http.MethodGet).Path("/toto").HandlerFunc(s.testHandler)
 
 	// OAuth
 	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler).Methods(http.MethodGet)
@@ -55,6 +60,11 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) testHandler(w http.ResponseWriter, r *http.Request) {
+	u, _ := user.GetUser(r)
+	log.Println(u)
+}
+
 func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
 	if s.isTokenSet() == false {
 		ctx := appengine.NewContext(r)
@@ -64,5 +74,6 @@ func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
 		if err := s.initOauth(ctx); err != nil {
 			log.Fatal(err.Error())
 		}
+		user.Init()
 	}
 }

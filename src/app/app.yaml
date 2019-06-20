@@ -9,6 +9,7 @@
 runtime: go
 api_version: go1
 service: default
+env: flex
 
 manual_scaling:
   instances: 1
