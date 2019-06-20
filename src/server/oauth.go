@@ -46,4 +46,5 @@ func (s *Server) loginOauthHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusServiceUnavailable)
 	}
 	user.NewUser(w, r, authUser)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

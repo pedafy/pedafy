@@ -1,6 +1,7 @@
 package template
 
 import (
+	"github.com/pedafy/pedafy/src/server/user"
 	"google.golang.org/appengine"
 )
 
@@ -10,14 +11,16 @@ type Page struct {
 	PageName   string
 	Production bool
 	LoggedIn   bool
+	User       user.User
 	Data       interface{}
 }
 
 // NewPage returns a new page composed of the given data
-func NewPage(pageName string, data interface{}) Page {
+func NewPage(pageName string, loggedIn bool, user user.User, data interface{}) Page {
 	return Page{PageName: pageName,
 		Data:       data,
 		Production: !appengine.IsDevAppServer(),
-		LoggedIn:   false,
+		LoggedIn:   loggedIn,
+		User:       user,
 	}
 }

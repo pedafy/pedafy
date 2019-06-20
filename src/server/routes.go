@@ -26,9 +26,7 @@ func (s *Server) registerHandlers() {
 
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
-
-	// Test
-	r.Methods(http.MethodGet).Path("/toto").HandlerFunc(s.testHandler)
+	r.Methods(http.MethodGet).Path("/logout").HandlerFunc(s.logoutHandler)
 
 	// OAuth
 	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler).Methods(http.MethodGet)
@@ -49,20 +47,28 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Home", nil), "home.gohtml"); err != nil {
-		log.Fatal(err)
+	user, err := user.GetUser(r)
+
+	p := template.NewPage("Pedafy - Home", err == nil, user, nil)
+	if err := template.RenderTemplate(w, p, "home.gohtml"); err != nil {
+		log.Fatal(err.Error())
 	}
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
-	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Login", nil), "login.gohtml"); err != nil {
-		log.Fatal(err)
+	user, err := user.GetUser(r)
+
+	p := template.NewPage("Pedafy - Login", err == nil, user, nil)
+	if err := template.RenderTemplate(w, p, "login.gohtml"); err != nil {
+		log.Fatal(err.Error())
 	}
 }
 
-func (s *Server) testHandler(w http.ResponseWriter, r *http.Request) {
-	u, _ := user.GetUser(r)
-	log.Println(u)
+func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
+	if err := user.LogoutUser(w, r); err != nil {
+		log.Fatal(err.Error())
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {

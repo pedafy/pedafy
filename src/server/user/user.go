@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -58,15 +59,39 @@ func NewUser(w http.ResponseWriter, r *http.Request, user goth.User) error {
 	return nil
 }
 
-func GetUser(r *http.Request) (User, error) {
+func LogoutUser(w http.ResponseWriter, r *http.Request) error {
+	c, err := r.Cookie("session")
+	if err != nil {
+		return err
+	}
+
+	if _, ok := sessions[c.Value]; !ok {
+		return errors.New("no user found")
+	}
+
+	users[sessions[c.Value]] = User{}
+	sessions[c.Value] = ""
+
+	c = &http.Cookie{
+		Name:   "session",
+		Path:   "/",
+		Value:  "",
+		MaxAge: 0,
+	}
+	http.SetCookie(w, c)
+
+	return nil
+}
+
+// GetUser returns the user link to the request
+func GetUser(r *http.Request) (user User, err error) {
 	c, err := r.Cookie("session")
 	if err != nil {
 		return User{}, err
 	}
 
-	var user User
 	if login, ok := sessions[c.Value]; ok {
-		user = users[login]
+		return users[login], nil
 	}
-	return user, nil
+	return User{}, errors.New("no user found")
 }
