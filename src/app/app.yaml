@@ -17,6 +17,9 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
+env_variables:
+  SESSION_SECRET: '123456789'
+
 handlers:
   # serve service favicon
   - url: /favicon\.ico

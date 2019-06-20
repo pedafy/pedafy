@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/markbates/goth/gothic"
+
 	"github.com/pedafy/pedafy/src/template"
 
 	"github.com/gorilla/handlers"
@@ -24,7 +26,8 @@ func (s *Server) registerHandlers() {
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
 
 	// OAuth
-	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler)
+	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler).Methods(http.MethodGet)
+	r.HandleFunc("/auth/{provider}", gothic.BeginAuthHandler).Methods(http.MethodGet)
 
 	r.Methods(http.MethodGet).Path("/tig").HandlerFunc(s.tigHomeHandler)
 	r.Methods(http.MethodGet).Path("/tig/{id:[0-9]+}").HandlerFunc(s.tigHandler)

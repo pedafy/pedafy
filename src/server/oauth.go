@@ -24,7 +24,7 @@ func (s *Server) initOauth(ctx context.Context) error {
 
 func (s *Server) setOauthProvider() {
 
-	// TODO: simply the code here
+	// TODO: simplify the code here
 
 	if appengine.IsDevAppServer() {
 		goth.UseProviders(
@@ -38,5 +38,12 @@ func (s *Server) setOauthProvider() {
 }
 
 func (s *Server) loginOauthHandler(w http.ResponseWriter, r *http.Request) {
-
+	// Deprecated
+	// Google App Engine does not allow to do direct http.Get()/Post() request
+	//
+	// user, err := gothic.CompleteUserAuth(w, r)
+	// if err != nil {
+	// 	http.Error(w, err.Error(), http.StatusServiceUnavailable)
+	// }
+	// fmt.Fprintln(w, user)
 }
