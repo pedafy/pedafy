@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 
+	"google.golang.org/appengine"
+
 	"github.com/pedafy/pedafy/src/template"
 
 	"github.com/pedafy/pedafy/src/datastore"
@@ -30,7 +32,19 @@ type Server struct {
 func (s *Server) Start() {
 
 	s.registerHandlers()
+	s.initEndpoint()
 	template.Init("../../public/template")
+}
+
+func (s *Server) initEndpoint() {
+	s.EndpointServices = make(map[serviceName]string)
+	if appengine.IsDevAppServer() {
+		s.EndpointServices[ServiceAssignments] = "http://localhost:9001"
+		s.EndpointServices[ServiceTasks] = "http://localhost:9002"
+	} else {
+		s.EndpointServices[ServiceAssignments] = "https://api.pedafy.com/tig/v1"
+		s.EndpointServices[ServiceTasks] = "https://api.pedafy.com/task/v1"
+	}
 }
 
 // fetchTokenAPI will request all the API token that are needed

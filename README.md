@@ -7,7 +7,7 @@ Pedafy is a web application allowing Epitech staff to assign "TIG" to students.
 ### Version 1
 - **Release date:** 01/07/2019
 - **Contains**:
-  - - [ ] OAuth 2 Signin
+  - - [x] OAuth 2 Signin
   - - [ ] Main dashboard (display all the available tabs)
   - - [ ] User rights management (system of groups)
   - - [ ] A "non tigeable" list of user
