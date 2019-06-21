@@ -47,27 +47,25 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
-	p := template.NewPage("Pedafy - Home", err == nil, user, nil)
+	p := template.NewPage("Pedafy - Home", loggedIn == nil, user, nil)
 	if err := template.RenderTemplate(w, p, "home.gohtml"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
-	p := template.NewPage("Pedafy - Login", err == nil, user, nil)
+	p := template.NewPage("Pedafy - Login", loggedIn == nil, user, nil)
 	if err := template.RenderTemplate(w, p, "login.gohtml"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
-	if err := user.LogoutUser(w, r); err != nil {
-		log.Fatal(err.Error())
-	}
+	user.LogoutUser(w, r)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

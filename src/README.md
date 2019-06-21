@@ -9,7 +9,6 @@
 | `/tig/modify/{tig_id}` | `helper`, `admin` | `modify_assignment` |
 | `/tig/new` | `helper`, `admin` | `new_assignment` |
 | `/tig/review/{tig_id}` | `admin` | `review_assignment` |
-| `/task` | `student` | `my_tasks` |
 | `/task/{task_id}` | `student`, `helper`, `admin` | `one_task` |
 | `/task` | `helper`, `admin` | `all_tasks` |
 | `/task/new` | `helper`, `admin` | `new_task` |
