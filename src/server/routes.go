@@ -5,6 +5,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/pedafy/pedafy/src/server/user"
+
+	"github.com/markbates/goth/gothic"
+
 	"github.com/pedafy/pedafy/src/template"
 
 	"github.com/gorilla/handlers"
@@ -22,6 +26,11 @@ func (s *Server) registerHandlers() {
 
 	r.Methods(http.MethodGet).Path("/").HandlerFunc(s.homeHandler)
 	r.Methods(http.MethodGet).Path("/login").HandlerFunc(s.loginHandler)
+	r.Methods(http.MethodGet).Path("/logout").HandlerFunc(s.logoutHandler)
+
+	// OAuth
+	r.HandleFunc("/auth/{provider}/callback", s.loginOauthHandler).Methods(http.MethodGet)
+	r.HandleFunc("/auth/{provider}", gothic.BeginAuthHandler).Methods(http.MethodGet)
 
 	r.Methods(http.MethodGet).Path("/tig").HandlerFunc(s.tigHomeHandler)
 	r.Methods(http.MethodGet).Path("/tig/{id:[0-9]+}").HandlerFunc(s.tigHandler)
@@ -38,23 +47,39 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Home", nil), "home.gohtml"); err != nil {
-		log.Fatal(err)
+	user, err := user.GetUser(r)
+
+	p := template.NewPage("Pedafy - Home", err == nil, user, nil)
+	if err := template.RenderTemplate(w, p, "home.gohtml"); err != nil {
+		log.Fatal(err.Error())
 	}
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
-	if err := template.RenderTemplate(w, template.NewPage("Pedafy - Login", nil), "login.gohtml"); err != nil {
-		log.Fatal(err)
+	user, err := user.GetUser(r)
+
+	p := template.NewPage("Pedafy - Login", err == nil, user, nil)
+	if err := template.RenderTemplate(w, p, "login.gohtml"); err != nil {
+		log.Fatal(err.Error())
 	}
+}
+
+func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
+	if err := user.LogoutUser(w, r); err != nil {
+		log.Fatal(err.Error())
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
 	if s.isTokenSet() == false {
 		ctx := appengine.NewContext(r)
-		err := s.fetchTokenAPI(ctx)
-		if err != nil {
+		if err := s.fetchTokenAPI(ctx); err != nil {
 			log.Fatal(err.Error())
 		}
+		if err := s.initOauth(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		user.Init()
 	}
 }

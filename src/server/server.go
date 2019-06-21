@@ -20,10 +20,15 @@ const (
 type Server struct {
 	EndpointServices map[serviceName]string
 	TokenAPI         map[serviceName]string
+
+	// Oauth
+	oAuthID     string
+	oAuthSecret string
 }
 
 // Start the server by setting all its data
 func (s *Server) Start() {
+
 	s.registerHandlers()
 	template.Init("../../public/template")
 }
