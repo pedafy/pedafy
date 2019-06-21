@@ -28,10 +28,13 @@ type (
 		Data []Task `json:"data"`
 	}
 
-	// Status represents a task's status
 	Status struct {
 		ID   int    `json:"id"`
 		Name string `json:"name"`
+	}
+
+	StatusArrayData struct {
+		Data []Status `json:"data"`
 	}
 )
 
@@ -73,7 +76,7 @@ func (s *Server) taskGetAll() ([]Task, error) {
 // 	return data.Data, err
 // }
 
-func (s *Server) taskGetOneTask(taskID int) ([]Task, error) {
+func (s *Server) taskGetOne(taskID int) ([]Task, error) {
 	var data TaskArrayData
 
 	client := &http.Client{}
@@ -91,7 +94,7 @@ func (s *Server) taskGetOneTask(taskID int) ([]Task, error) {
 	return data.Data, err
 }
 
-func (s *Server) taskNewTask(creatorID, statusID int, title, description string) (Task, error) {
+func (s *Server) taskNew(creatorID, statusID int, title, description string) (Task, error) {
 	var data TaskData
 
 	client := &http.Client{}
@@ -119,7 +122,7 @@ func (s *Server) taskNewTask(creatorID, statusID int, title, description string)
 	return data.Data, err
 }
 
-func (s *Server) taskModifyTask(taskID, creatorID, statusID int, title, description string) (Task, error) {
+func (s *Server) taskModify(taskID, creatorID, statusID int, title, description string) (Task, error) {
 	var data TaskData
 
 	client := &http.Client{}
@@ -134,6 +137,24 @@ func (s *Server) taskModifyTask(taskID, creatorID, statusID int, title, descript
 	tJSON, _ := json.Marshal(t)
 
 	req, _ := http.NewRequest("POST", s.EndpointServices[ServiceTasks]+fmt.Sprintf("/task/%d", taskID), bytes.NewBuffer(tJSON))
+	req.Header.Set("Authorization", s.TokenAPI[ServiceTasks])
+	res, err := client.Do(req)
+	if err != nil {
+		return data.Data, err
+	}
+	defer res.Body.Close()
+
+	responseBody, err := ioutil.ReadAll(res.Body)
+
+	err = json.Unmarshal(responseBody, &data)
+	return data.Data, err
+}
+
+func (s *Server) taskStatusGetAll() ([]Status, error) {
+	var data StatusArrayData
+
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceTasks]+"/status", nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceTasks])
 	res, err := client.Do(req)
 	if err != nil {
