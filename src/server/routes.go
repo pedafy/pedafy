@@ -42,6 +42,8 @@ func (s *Server) registerHandlers() {
 	r.Methods(http.MethodGet).Path("/task/{id:[0-9]+}").HandlerFunc(s.taskHandler)
 	r.Methods(http.MethodGet).Path("/task/modify/{id:[0-9]+}").HandlerFunc(s.modifyTaskHandler)
 	r.Methods(http.MethodGet).Path("/task/new").HandlerFunc(s.newTaskHandler)
+	r.Methods(http.MethodPost).Path("/task/modify/{id:[0-9]+}").HandlerFunc(s.modifyTaskHandlerAPI)
+	r.Methods(http.MethodPost).Path("/task/new").HandlerFunc(s.newTaskHandlerAPI)
 
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, r))
 }
