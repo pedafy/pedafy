@@ -5,3 +5,36 @@
 .icon-block .material-icons {
     font-size: inherit;
 }
+
+/* label color */
+.input-field label {
+    color: #000;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #5c6bc0 !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #5c6bc0 !important;
+    box-shadow: 0 1px 0 0 #5c6bc0 !important;
+}
+
+/* valid color */
+.input-field input[type=text].valid {
+    border-bottom: 1px solid rgb(4, 160, 25) !important;
+    box-shadow: 0 1px 0 0 rgb(4, 160, 25) !important;
+}
+
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid rgb(223, 1, 1) !important;
+    box-shadow: 0 1px 0 0 rgb(223, 1, 1) !important;
+}
+
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #5c6bc0 !important;
+}

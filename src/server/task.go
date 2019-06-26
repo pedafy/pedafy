@@ -73,17 +73,61 @@ func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
-}
+	user, loggedIn := user.GetUser(r)
 
-func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	vars := mux.Vars(r)
+	ids := vars["id"]
+	taskID, _ := strconv.Atoi(ids)
+
+	ts, err := s.taskGetOne(taskID)
+	if err != nil {
+		log.Println(err.Error())
+		ts = []Task{}
+	}
+
+	sts, err := s.taskStatusGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		sts = []Status{}
+	}
+
+	data := taskPageInfo{
+		Tasks:  ts,
+		Status: sts,
+	}
+
+	p := template.NewPage("Pedafy - Modify task", loggedIn == nil, user, data)
+	if err := template.RenderTemplate(w, p, "modify_task.gohtml"); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	vars := mux.Vars(r)
+	ids := vars["id"]
+	taskID, _ := strconv.Atoi(ids)
+
+	statusID, _ := strconv.Atoi(r.FormValue("status"))
+	newTask, err := s.taskModify(taskID, 1, statusID, r.FormValue("title"), r.FormValue("description"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	http.Redirect(w, r, fmt.Sprintf("/task/%d", newTask.ID), http.StatusSeeOther)
+}
+
+func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
+	user, loggedIn := user.GetUser(r)
+
+	p := template.NewPage("Pedafy - New task", loggedIn == nil, user, nil)
+	if err := template.RenderTemplate(w, p, "new_task.gohtml"); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	newTask, err := s.taskNew(1, 1, r.FormValue("title"), r.FormValue("description"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	http.Redirect(w, r, fmt.Sprintf("/task/%d", newTask.ID), http.StatusSeeOther)
 }

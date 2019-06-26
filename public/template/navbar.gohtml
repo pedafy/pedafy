@@ -1,35 +1,28 @@
 {{define "navbar"}}
-<script src="public/js/navbar.js"></script>
+
+{{$url := "default"}}
+{{if eq .Production true}}
+    {{$url = "https://pedafy.com"}}
+{{end}}
+{{if eq .Production false}}
+    {{$url = "http://localhost:9000"}}
+{{end}}
+
+<script src="{{$url}}/public/js/navbar.js"></script>
 
 <nav>
     <div class="nav-wrapper indigo lighten-1">
         <div class="container">
-            {{if .Production}}
-            <a href="pedafy.com/">Logo</a>
-            {{else}}
-            <a href="/">Home</a>
-            {{end}}
+            <a href="{{$url}}/">Home</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                {{if eq .Production true}}
-                    {{if eq .LoggedIn true}}
-                        <li><a href="https://pedafy.com/#tig">Assignments</a></li>
-                        <li><a href="https://pedafy.com/logout">Logout</a></li>
-                    {{end}}
-                    {{if eq .LoggedIn false}}
-                        <li><a href="https://pedafy.com/#tig">Assignments</a></li>
-                        <li><a href="https://pedafy.com/login">Login</a></li>
-                    {{end}}
+                {{if eq .LoggedIn true}}
+                    <li><a href="{{$url}}/#tig">Assignments</a></li>
+                    <li><a href="{{$url}}/logout">Logout</a></li>
                 {{end}}
-                {{if eq .Production false}}
-                    {{if eq .LoggedIn true}}
-                        <li><a href="/#tig">Assignments</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    {{end}}
-                    {{if eq .LoggedIn false}}
-                        <li><a href="/#tig">Assignments</a></li>
-                        <li><a href="/login">Login</a></li>
-                    {{end}}
+                {{if eq .LoggedIn false}}
+                    <li><a href="{{$url}}/#tig">Assignments</a></li>
+                    <li><a href="{{$url}}/login">Login</a></li>
                 {{end}}
             </ul>
         </div>
@@ -37,25 +30,13 @@
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
-        {{if eq .Production true}}
-        {{if eq .LoggedIn true}}
-            <li><a href="https://pedafy.com/#tig">Assignments</a></li>
-            <li><a href="https://pedafy.com/logout">Logout</a></li>
-        {{end}}
-        {{if eq .LoggedIn false}}
-            <li><a href="https://pedafy.com/#tig">Assignments</a></li>
-            <li><a href="https://pedafy.com/login">Login</a></li>
-        {{end}}
+    {{if eq .LoggedIn true}}
+        <li><a href="{{$url}}/#tig">Assignments</a></li>
+        <li><a href="{{$url}}/logout">Logout</a></li>
     {{end}}
-    {{if eq .Production false}}
-        {{if eq .LoggedIn true}}
-            <li><a href="/#tig">Assignments</a></li>
-            <li><a href="/logout">Logout</a></li>
-        {{end}}
-        {{if eq .LoggedIn false}}
-            <li><a href="/#tig">Assignments</a></li>
-            <li><a href="/login">Login</a></li>
-        {{end}}
+    {{if eq .LoggedIn false}}
+        <li><a href="{{$url}}/#tig">Assignments</a></li>
+        <li><a href="{{$url}}/login">Login</a></li>
     {{end}}
 </ul>
 {{end}}
