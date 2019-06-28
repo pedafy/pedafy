@@ -10,6 +10,7 @@
     {{$url = "http://localhost:9000"}}
 {{end}}
 <main>
+    {{$status := .Data.Status}}
     {{$prod := .Production}}
     <div class="container">
         <div class="row">
@@ -32,6 +33,16 @@
                     <div class="input-field col s12 m6">
                         <input id="description" name="description" type="text" data-length="200" class="validate">
                         <label for="description">Description</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        {{range $status}}
+                            <p>
+                                <label>
+                                <input name="status" value="{{.ID}}" type="radio"/>
+                                <span>{{.Name}}</span>
+                                </label>
+                            </p>
+                        {{end}}
                     </div>
                 </div>
                 <button class="btn indigo lighten-1 waves-effect waves-light right" type="submit" name="action">Create<i class="mdi-content-send right"></i></button>

@@ -118,14 +118,28 @@ func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	p := template.NewPage("Pedafy - New task", loggedIn == nil, user, nil)
+	sts, err := s.taskStatusGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		sts = []Status{}
+	}
+
+	data := taskPageInfo{
+		Status: sts,
+	}
+
+	p := template.NewPage("Pedafy - New task", loggedIn == nil, user, data)
 	if err := template.RenderTemplate(w, p, "new_task.gohtml"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	newTask, err := s.taskNew(1, 1, r.FormValue("title"), r.FormValue("description"))
+	statusID, err := strconv.Atoi(r.FormValue("status"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	newTask, err := s.taskNew(1, statusID, r.FormValue("title"), r.FormValue("description"))
 	if err != nil {
 		log.Fatal(err.Error())
 	}

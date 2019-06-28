@@ -23,7 +23,7 @@
                 <div class="card white darken-1">
                 <div class="card-content dark-text">
                     <span class="card-title">{{.Title}}
-                            {{$currentTaskStatusID := .ID}}
+                            {{$currentTaskStatusID := .StatusID}}
                             {{range $status}}
                                 {{if eq .ID $currentTaskStatusID}}
                                     {{if eq .Name "archived"}}
