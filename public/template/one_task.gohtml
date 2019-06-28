@@ -1,6 +1,15 @@
 {{template "header" .}}
 {{template "materialize"}}
 {{template "navbar" .}}
+
+{{$url := "default"}}
+{{if eq .Production true}}
+    {{$url = "https://pedafy.com"}}
+{{end}}
+{{if eq .Production false}}
+    {{$url = "http://localhost:9000"}}
+{{end}}
+
 <main>
     {{$prod := .Production}}
     {{$status := .Data.Status}}
@@ -40,12 +49,8 @@
                         <h6>Last edit: <p>{{.LastEdit}}</p></h6>
                     </div>
                     <div class="card-action">
-                        {{if eq $prod true}}
-                            <a href="https://pedafy.com/task/modify/{{.ID}}">Modify</a>
-                        {{end}}
-                        {{if eq $prod false}}
-                            <a href="/task/modify/{{.ID}}">Modify</a>
-                        {{end}}
+                        <a href="{{$url}}/task">Back</a>
+                        <a href="{{$url}}/task/modify/{{.ID}}">Modify</a>
                     </div>
                 </div>
             </div>
