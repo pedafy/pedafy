@@ -36,6 +36,21 @@
                         <input id="description" name="description" type="text" data-length="200" class="validate" value="{{$task.Description}}">
                         <label for="description">Description</label>
                     </div>
+                    {{$statusIDTask := $task.StatusID}}
+                    <div class="input-field col s12 m6">
+                        {{range $status}}
+                            <p>
+                                <label>
+                                <input name="status" value="{{.ID}}" type="radio"
+                                {{if eq .ID $statusIDTask}}
+                                    checked
+                                {{end}}
+                                />
+                                <span>{{.Name}}</span>
+                                </label>
+                            </p>
+                        {{end}}
+                    </div>
                 </div>
                 <button class="btn indigo lighten-1 waves-effect waves-light right" type="submit" name="action">Modify<i class="mdi-content-send right"></i></button>
             </form>

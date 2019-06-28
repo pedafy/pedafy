@@ -107,7 +107,11 @@ func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	ids := vars["id"]
 	taskID, _ := strconv.Atoi(ids)
 
-	statusID, _ := strconv.Atoi(r.FormValue("status"))
+	statusID, err := strconv.Atoi(r.FormValue("status"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	// TODO: fix the creator ID
 	newTask, err := s.taskModify(taskID, 1, statusID, r.FormValue("title"), r.FormValue("description"))
 	if err != nil {
 		log.Fatal(err.Error())
@@ -139,6 +143,7 @@ func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	// TODO: fix the creator ID
 	newTask, err := s.taskNew(1, statusID, r.FormValue("title"), r.FormValue("description"))
 	if err != nil {
 		log.Fatal(err.Error())
