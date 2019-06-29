@@ -64,7 +64,7 @@ func (s *Server) assignmentGetOne(assignmentID int) ([]Assignment, error) {
 	var data AssignmentArrayData
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignment/id/%d", assignmentID), nil)
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/id/%d", assignmentID), nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceAssignments])
 	res, err := client.Do(req)
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error
 	var data AssignmentArrayData
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignment/assigned_id/%d", assignedID), nil)
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/assigned_id/%d", assignedID), nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceAssignments])
 	res, err := client.Do(req)
 	if err != nil {
