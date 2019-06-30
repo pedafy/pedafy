@@ -11,10 +11,19 @@ import (
 	"github.com/pedafy/pedafy/src/template"
 )
 
+type Date struct {
+	Month string
+	Year  string
+	Day   string
+}
+
 type assignmentPageInfo struct {
 	Assignments []Assignment
 	Tasks       []Task
 	Status      []StatusAssignment
+
+	DueDate        Date
+	AccomplishDate Date
 }
 
 func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -140,7 +149,59 @@ func (s *Server) tigHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) modifyTigHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	user, loggedIn := user.GetUser(r)
+
+	vars := mux.Vars(r)
+	ids := vars["id"]
+	aID, _ := strconv.Atoi(ids)
+
+	as, err := s.assignmentGetOne(aID)
+	if err != nil {
+		log.Println(err.Error())
+		as = []Assignment{}
+	}
+
+	sts, err := s.asignmentsStatusGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		sts = []StatusAssignment{}
+	}
+
+	ts, err := s.taskGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		ts = []Task{}
+	}
+
+	y, m, d := as[0].DueDate.Date()
+	dueDate := Date{
+		Month: strconv.Itoa(int(m) - 1),
+		Year:  strconv.Itoa(y),
+		Day:   strconv.Itoa(d),
+	}
+
+	completionDate := Date{}
+	if as[0].CompletionDate != nil {
+		y, m, d = as[0].CompletionDate.Date()
+		completionDate = Date{
+			Month: strconv.Itoa(int(m) - 1),
+			Year:  strconv.Itoa(y),
+			Day:   strconv.Itoa(d),
+		}
+	}
+
+	data := assignmentPageInfo{
+		Assignments:    as,
+		Status:         sts,
+		Tasks:          ts,
+		DueDate:        dueDate,
+		AccomplishDate: completionDate,
+	}
+
+	p := template.NewPage("Pedafy - Modify assignment", loggedIn == nil, user, data)
+	if err := template.RenderTemplate(w, p, "modify_assignment.gohtml"); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {

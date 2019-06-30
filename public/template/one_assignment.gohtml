@@ -11,6 +11,7 @@
 {{end}}
 
 <main>
+    {{$user := .User}}
     {{$prod := .Production}}
     {{$status := .Data.Status}}
     {{$task := .Data.Tasks}}
@@ -50,7 +51,9 @@
                     </div>
                     <div class="card-action">
                         <a href="{{$url}}/tig">Back</a>
-                        <a href="{{$url}}/tig/modify/{{.ID}}">Modify</a>
+                        {{if eq $user.Login "florent.poinsard@epitech.eu"}}
+                            <a href="{{$url}}/tig/modify/{{.ID}}">Modify</a>
+                        {{end}}
                     </div>
                 </div>
             </div>
