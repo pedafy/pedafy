@@ -23,8 +23,8 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 	var data assignmentPageInfo
 	var templateName string
 
-	if true {
-		// Student user
+	if false {
+		// Student users
 
 		// use real student ID
 		as, err := s.assignmentGetByAssignedOne(1)
@@ -57,7 +57,37 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 		templateName = "my_assignments"
 
 	} else {
-		// Helper and Admin user
+		// Helper & Admin users
+
+		as, err := s.assignmentsGetAll()
+		if err != nil {
+			log.Println(err.Error())
+			as = []Assignment{}
+		}
+
+		sts, err := s.asignmentsStatusGetAll()
+		if err != nil {
+			log.Println(err.Error())
+			sts = []StatusAssignment{}
+		}
+
+		var ts []Task
+
+		for _, a := range as {
+			t, err := s.taskGetOne(a.TaskID)
+			ts = append(ts, t[0])
+			if err != nil {
+				log.Println(err.Error())
+			}
+		}
+
+		data = assignmentPageInfo{
+			Assignments: as,
+			Status:      sts,
+			Tasks:       ts,
+		}
+		templateName = "all_assignments"
+
 	}
 	p := template.NewPage("Pedafy - Assignments", loggedIn == nil, user, data)
 	if err := template.RenderTemplate(w, p, templateName+".gohtml"); err != nil {
