@@ -34,7 +34,7 @@ func (s *Server) Start() {
 
 	s.registerHandlers()
 	s.initEndpoint()
-	err := template.Init("../../public/template")
+	err := template.Init("./public/template")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

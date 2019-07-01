@@ -11,7 +11,7 @@ func (s *Server) serveStatic(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path[len("/public/"):]
 
-	path = "../../public/" + path
+	path = "./public/" + path
 	data, err := ioutil.ReadFile(string(path))
 
 	if err == nil {
