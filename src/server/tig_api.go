@@ -12,8 +12,8 @@ import (
 type (
 	Assignment struct {
 		ID             int        `json:"id"`
-		CreatorID      int        `json:"creator_id"`
-		AssignedID     int        `json:"assigned_id"`
+		CreatorID      string     `json:"creator_id"`
+		AssignedID     string     `json:"assigned_id"`
 		StatusID       int        `json:"status_id"`
 		TaskID         int        `json:"task_id"`
 		CreatedAt      *time.Time `json:"created_at"`
@@ -96,7 +96,7 @@ func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error
 	return data.Data, err
 }
 
-func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueDate time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentNew(creatorID, assignedID string, statusID, taskID int, dueDate time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}
@@ -127,7 +127,7 @@ func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueD
 	return data.Data, err
 }
 
-func (s *Server) assignmentModify(assignmentID, creatorID, assignedID, statusID, taskID int, dueDate, completionDate time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentModify(assignmentID int, creatorID, assignedID string, statusID, taskID int, dueDate, completionDate time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}
@@ -159,7 +159,7 @@ func (s *Server) assignmentModify(assignmentID, creatorID, assignedID, statusID,
 	return data.Data, err
 }
 
-func (s *Server) assignmentReview(assignmentID, creatorID, assignedID, taskID int, dueDate, completionDate *time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentReview(assignmentID int, creatorID, assignedID string, taskID int, dueDate, completionDate *time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}

@@ -103,6 +103,8 @@ func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
+	user, _ := user.GetUser(r)
+
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	taskID, _ := strconv.Atoi(ids)
@@ -112,7 +114,7 @@ func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 	// TODO: fix the creator ID
-	newTask, err := s.taskModify(taskID, 1, statusID, r.FormValue("title"), r.FormValue("description"))
+	newTask, err := s.taskModify(taskID, user.Login, statusID, r.FormValue("title"), r.FormValue("description"))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -139,12 +141,14 @@ func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
+	user, _ := user.GetUser(r)
+
 	statusID, err := strconv.Atoi(r.FormValue("status"))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	// TODO: fix the creator ID
-	newTask, err := s.taskNew(1, statusID, r.FormValue("title"), r.FormValue("description"))
+	newTask, err := s.taskNew(user.Login, statusID, r.FormValue("title"), r.FormValue("description"))
 	if err != nil {
 		log.Fatal(err.Error())
 	}

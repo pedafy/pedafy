@@ -12,7 +12,7 @@ import (
 type (
 	Task struct {
 		ID          int        `json:"id"`
-		CreatorID   int        `json:"creator_id"`
+		CreatorID   string     `json:"creator_id"`
 		StatusID    int        `json:"status_id"`
 		Title       string     `json:"title"`
 		Description string     `json:"description"`
@@ -94,7 +94,7 @@ func (s *Server) taskGetOne(taskID int) ([]Task, error) {
 	return data.Data, err
 }
 
-func (s *Server) taskNew(creatorID, statusID int, title, description string) (Task, error) {
+func (s *Server) taskNew(creatorID string, statusID int, title, description string) (Task, error) {
 	var data TaskData
 
 	client := &http.Client{}
@@ -122,7 +122,7 @@ func (s *Server) taskNew(creatorID, statusID int, title, description string) (Ta
 	return data.Data, err
 }
 
-func (s *Server) taskModify(taskID, creatorID, statusID int, title, description string) (Task, error) {
+func (s *Server) taskModify(taskID int, creatorID string, statusID int, title, description string) (Task, error) {
 	var data TaskData
 
 	client := &http.Client{}
