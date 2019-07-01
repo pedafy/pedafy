@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/pedafy/pedafy/src/server/user"
@@ -21,6 +22,9 @@ func (s *Server) initOauth(ctx context.Context) error {
 	}
 	s.oAuthID = creds.ClientID
 	s.oAuthSecret = creds.ClientSecret
+	log.Println("DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG ========= DEBUG")
+	log.Println(s.oAuthID)
+	log.Println(s.oAuthSecret)
 	s.setOauthProvider()
 	return nil
 }
