@@ -20,4 +20,5 @@ deploy:
   provider: gae
   keyfile: pedafy-251c5ecfe2ec.json
   project: pedafy
+  config: ./src/app/app.yaml
   on: master
