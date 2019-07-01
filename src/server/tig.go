@@ -31,6 +31,10 @@ type assignmentPageInfo struct {
 func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	var data assignmentPageInfo
 	var templateName string
 
@@ -38,7 +42,7 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 		// Student users
 
 		// use real student ID
-		as, err := s.assignmentGetByAssignedOne(1)
+		as, err := s.assignmentGetByAssignedOne(user.Login)
 		if err != nil {
 			log.Println(err.Error())
 			as = []Assignment{}
@@ -67,7 +71,7 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		templateName = "my_assignments"
 
-	} else {
+	} else if user.Login == "florent1.poinsard@epitech.eu" {
 		// Helper & Admin users
 
 		as, err := s.assignmentsGetAll()
@@ -109,6 +113,10 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) tigHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	assignmentID, _ := strconv.Atoi(ids)
@@ -153,6 +161,10 @@ func (s *Server) tigHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTigHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	aID, _ := strconv.Atoi(ids)
@@ -210,8 +222,12 @@ func (s *Server) modifyTigHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	user, _ := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	tigID, _ := strconv.Atoi(ids)
@@ -251,6 +267,10 @@ func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
 func (s *Server) newTigHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	as, err := s.assignmentsGetAll()
 	if err != nil {
 		log.Println(err.Error())
@@ -282,8 +302,12 @@ func (s *Server) newTigHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) newTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	user, _ := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	dueDate := r.FormValue("due_date")
 	dueDateTime, err := time.Parse("Jan 02, 2006", dueDate)
 	if err != nil {

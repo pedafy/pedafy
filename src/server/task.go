@@ -19,6 +19,10 @@ type taskPageInfo struct {
 func (s *Server) taskHomeHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	ts, err := s.taskGetAll()
 	if err != nil {
 		log.Println(err.Error())
@@ -45,6 +49,10 @@ func (s *Server) taskHomeHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	taskID, _ := strconv.Atoi(ids)
@@ -75,6 +83,10 @@ func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	taskID, _ := strconv.Atoi(ids)
@@ -103,8 +115,12 @@ func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	user, _ := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	vars := mux.Vars(r)
 	ids := vars["id"]
 	taskID, _ := strconv.Atoi(ids)
@@ -123,7 +139,10 @@ func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
-
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	sts, err := s.taskStatusGetAll()
 	if err != nil {
 		log.Println(err.Error())
@@ -141,8 +160,11 @@ func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	user, _ := user.GetUser(r)
-
+	user, loggedIn := user.GetUser(r)
+	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	statusID, err := strconv.Atoi(r.FormValue("status"))
 	if err != nil {
 		log.Fatal(err.Error())

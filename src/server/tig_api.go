@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -78,11 +79,13 @@ func (s *Server) assignmentGetOne(assignmentID int) ([]Assignment, error) {
 	return data.Data, err
 }
 
-func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error) {
+func (s *Server) assignmentGetByAssignedOne(assignedID string) ([]Assignment, error) {
 	var data AssignmentArrayData
 
+	assignedID = strings.Split(assignedID, "@")[0]
+
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/assigned_id/%d", assignedID), nil)
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/assigned_id/%s", assignedID), nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceAssignments])
 	res, err := client.Do(req)
 	if err != nil {
@@ -100,6 +103,8 @@ func (s *Server) assignmentNew(creatorID, assignedID string, statusID, taskID in
 	var data AssignmentData
 
 	client := &http.Client{}
+
+	assignedID = strings.Split(assignedID, "@")[0]
 
 	a := Assignment{
 		AssignedID:  assignedID,
@@ -131,6 +136,8 @@ func (s *Server) assignmentModify(assignmentID int, creatorID, assignedID string
 	var data AssignmentData
 
 	client := &http.Client{}
+
+	assignedID = strings.Split(assignedID, "@")[0]
 
 	a := Assignment{
 		AssignedID:     assignedID,
