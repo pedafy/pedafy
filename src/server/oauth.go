@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"log"
 	"net/http"
 
 	"github.com/pedafy/pedafy/src/server/user"
@@ -11,20 +10,17 @@ import (
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/azuread"
 	"google.golang.org/appengine"
-
-	"github.com/pedafy/pedafy/src/datastore"
 )
 
 func (s *Server) initOauth(ctx context.Context) error {
-	creds, err := datastore.FindAzureCredentialsInformation(ctx)
-	if err != nil {
-		return err
-	}
-	s.oAuthID = creds.ClientID
-	s.oAuthSecret = creds.ClientSecret
-	log.Println("DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG ========= DEBUG")
-	log.Println(s.oAuthID)
-	log.Println(s.oAuthSecret)
+	// creds, _ := datastore.FindAzureCredentialsInformation(ctx)
+	// // if err != nil {
+	// // 	return err
+	// // }
+	// s.oAuthID = creds.ClientID
+	// s.oAuthSecret = creds.ClientSecret
+	s.oAuthID = "3405088c-5068-4118-b567-eab3450c6779"
+	s.oAuthSecret = "IvV9CyFSYrnQj/gFNf+HChubNT2XcFbIBs1Jhs2XNB0="
 	s.setOauthProvider()
 	return nil
 }
