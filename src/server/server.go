@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 
 	"google.golang.org/appengine"
 
@@ -33,7 +34,10 @@ func (s *Server) Start() {
 
 	s.registerHandlers()
 	s.initEndpoint()
-	template.Init("../../public/template")
+	err := template.Init("../../public/template")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Server) initEndpoint() {

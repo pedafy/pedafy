@@ -16,12 +16,11 @@
             <a href="{{$url}}/">Home</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
+                <li><a href="{{$url}}/tig">Assignments</a></li>
                 {{if eq .LoggedIn true}}
-                    <li><a href="{{$url}}/#tig">Assignments</a></li>
                     <li><a href="{{$url}}/logout">Logout</a></li>
                 {{end}}
                 {{if eq .LoggedIn false}}
-                    <li><a href="{{$url}}/#tig">Assignments</a></li>
                     <li><a href="{{$url}}/login">Login</a></li>
                 {{end}}
             </ul>
@@ -30,12 +29,11 @@
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
+    <li><a href="{{$url}}/tig">Assignments</a></li>
     {{if eq .LoggedIn true}}
-        <li><a href="{{$url}}/#tig">Assignments</a></li>
         <li><a href="{{$url}}/logout">Logout</a></li>
     {{end}}
     {{if eq .LoggedIn false}}
-        <li><a href="{{$url}}/#tig">Assignments</a></li>
         <li><a href="{{$url}}/login">Login</a></li>
     {{end}}
 </ul>

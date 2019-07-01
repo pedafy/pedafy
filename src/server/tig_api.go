@@ -64,7 +64,7 @@ func (s *Server) assignmentGetOne(assignmentID int) ([]Assignment, error) {
 	var data AssignmentArrayData
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignment/id/%d", assignmentID), nil)
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/id/%d", assignmentID), nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceAssignments])
 	res, err := client.Do(req)
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error
 	var data AssignmentArrayData
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignment/assigned_id/%d", assignedID), nil)
+	req, _ := http.NewRequest("GET", s.EndpointServices[ServiceAssignments]+fmt.Sprintf("/assignments/assigned_id/%d", assignedID), nil)
 	req.Header.Set("Authorization", s.TokenAPI[ServiceAssignments])
 	res, err := client.Do(req)
 	if err != nil {
@@ -96,7 +96,7 @@ func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error
 	return data.Data, err
 }
 
-func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueDate *time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueDate time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}
@@ -108,7 +108,7 @@ func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueD
 		StatusID:    statusID,
 		Title:       title,
 		Description: description,
-		DueDate:     dueDate,
+		DueDate:     &dueDate,
 	}
 
 	aJSON, _ := json.Marshal(a)
@@ -127,7 +127,7 @@ func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueD
 	return data.Data, err
 }
 
-func (s *Server) assignmentModify(assignmentID, creatorID, assignedID, statusID, taskID int, dueDate, completionDate *time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentModify(assignmentID, creatorID, assignedID, statusID, taskID int, dueDate, completionDate time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}
@@ -139,8 +139,8 @@ func (s *Server) assignmentModify(assignmentID, creatorID, assignedID, statusID,
 		StatusID:       statusID,
 		Title:          title,
 		Description:    description,
-		DueDate:        dueDate,
-		CompletionDate: completionDate,
+		DueDate:        &dueDate,
+		CompletionDate: &completionDate,
 	}
 
 	aJSON, _ := json.Marshal(a)
