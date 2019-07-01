@@ -1,0 +1,40 @@
+{{define "navbar"}}
+
+{{$url := "default"}}
+{{if eq .Production true}}
+    {{$url = "https://pedafy.com"}}
+{{end}}
+{{if eq .Production false}}
+    {{$url = "http://localhost:9000"}}
+{{end}}
+
+<script src="{{$url}}/public/js/navbar.js"></script>
+
+<nav>
+    <div class="nav-wrapper indigo lighten-1">
+        <div class="container">
+            <a href="{{$url}}/">Home</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{{$url}}/tig">Assignments</a></li>
+                {{if eq .LoggedIn true}}
+                    <li><a href="{{$url}}/logout">Logout</a></li>
+                {{end}}
+                {{if eq .LoggedIn false}}
+                    <li><a href="{{$url}}/login">Login</a></li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="{{$url}}/tig">Assignments</a></li>
+    {{if eq .LoggedIn true}}
+        <li><a href="{{$url}}/logout">Logout</a></li>
+    {{end}}
+    {{if eq .LoggedIn false}}
+        <li><a href="{{$url}}/login">Login</a></li>
+    {{end}}
+</ul>
+{{end}}

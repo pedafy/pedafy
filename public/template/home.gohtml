@@ -1,0 +1,34 @@
+{{template "header" .}}
+{{template "materialize"}}
+{{template "navbar" .}}
+<main>
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <br><br>
+            <h1 class="header center gray-text">Pedafy</h1>
+            <div class="row center">
+                <h5 class="header col s12 light">Never been easier to visualize TIG at epitech</h5>
+            </div>
+            <div class="row center">
+                {{ if .Production }}
+                    {{ if eq .LoggedIn false }}
+                        <a href="https://pedafy.com/login" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
+                    {{ end  }}
+                    {{ if eq .LoggedIn true }}
+                        <a href="https://pedafy.com/tig" id="download-button" class="btn-large waves-effect waves-light green">Main page</a>
+                    {{ end  }}
+               {{ else }}
+                    {{ if eq .LoggedIn false }}
+                        <a href="/login" id="download-button" class="btn-large waves-effect waves-light green">Get Started</a>
+                    {{ end  }}
+                    {{ if eq .LoggedIn true }}
+                        <a href="/tig" id="download-button" class="btn-large waves-effect waves-light green">Main page</a>
+                    {{ end  }}
+                {{ end }}       
+            </div>
+            <br><br>
+
+        </div>
+    </div>
+</main>
+{{template "footer"}}

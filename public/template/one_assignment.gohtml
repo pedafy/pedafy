@@ -1,0 +1,65 @@
+{{template "header" .}}
+{{template "materialize"}}
+{{template "navbar" .}}
+
+{{$url := "default"}}
+{{if eq .Production true}}
+    {{$url = "https://pedafy.com"}}
+{{end}}
+{{if eq .Production false}}
+    {{$url = "http://localhost:9000"}}
+{{end}}
+
+<main>
+    {{$user := .User}}
+    {{$prod := .Production}}
+    {{$status := .Data.Status}}
+    {{$task := .Data.Tasks}}
+    <div class="container">
+        <div class="row">
+            {{range $index, $assignment := .Data.Assignments}}
+            <div class="col s12 m12">
+                <div class="card white darken-1">
+                    <div class="card-content dark-text">
+                        <span class="card-title">{{.Title}}</span>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col s12 m12">
+                <div class="card white darken-1">
+                    <div class="card-content dark-text">
+                        <h6>Description:</h6>
+                        <p>{{.Description}}</p>
+                        <h6>Status:
+                        {{range $status}}
+                            <span>{{.Name}}</span>
+                        {{end}}
+                        </h6>
+                        <h6>Task:
+                            <a href="{{$url}}/task/{{range $task}}{{.ID}}{{end}}">{{range $task}}{{.ID}}{{end}}</a>
+                        </h6>
+                        <h6>Assigned: {{.AssignedID}}</h6>
+                        <h6>Creator: {{.CreatorID}}</h6>
+                        <h6>Created at: <p>{{.CreatedAt}}</p></h6>
+                        <h6>Last edit: <p>{{.LastEdit}}</p></h6>
+                        <h6>Due date: <p>{{.DueDate}}</p></h6>
+                        {{if .CompletionDate}}
+                            <h6>Completion date: <p>{{.CompletionDate}}</p></h6>
+                        {{else}}
+                            <h6>Not completed yet</h6>
+                        {{end}}
+                    </div>
+                    <div class="card-action">
+                        <a href="{{$url}}/tig">Back</a>
+                        {{if eq $user.Login "florent1.poinsard@epitech.eu"}}
+                            <a href="{{$url}}/tig/modify/{{.ID}}">Modify</a>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</main>
+{{template "footer"}}

@@ -9,6 +9,7 @@
 runtime: go
 api_version: go1
 service: default
+env: flex
 
 manual_scaling:
   instances: 1
@@ -16,6 +17,9 @@ resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
+
+env_variables:
+  SESSION_SECRET: '123456789'
 
 handlers:
   # serve service favicon
