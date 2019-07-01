@@ -249,18 +249,62 @@ func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, fmt.Sprintf("/tig/%d", newTig.ID), http.StatusSeeOther)
 }
 
-func (s *Server) reviewTigHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
-}
-
-func (s *Server) reviewTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
-}
-
 func (s *Server) newTigHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	user, loggedIn := user.GetUser(r)
+
+	as, err := s.assignmentsGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		as = []Assignment{}
+	}
+
+	sts, err := s.asignmentsStatusGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		sts = []StatusAssignment{}
+	}
+
+	ts, err := s.taskGetAll()
+	if err != nil {
+		log.Println(err.Error())
+		ts = []Task{}
+	}
+
+	data := assignmentPageInfo{
+		Assignments: as,
+		Status:      sts,
+		Tasks:       ts,
+	}
+
+	p := template.NewPage("Pedafy - New tig", loggedIn == nil, user, data)
+	if err := template.RenderTemplate(w, p, "new_assignment.gohtml"); err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (s *Server) newTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	dueDate := r.FormValue("due_date")
+	dueDateTime, err := time.Parse("Jan 02, 2006", dueDate)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	statusID, err := strconv.Atoi(r.FormValue("status_id"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	assignedID, err := strconv.Atoi(r.FormValue("assigned"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	taskID, err := strconv.Atoi(r.FormValue("task_id"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	// TODO: fix the creator ID
+	newTig, err := s.assignmentNew(1, assignedID, statusID, taskID, dueDateTime, r.FormValue("title"), r.FormValue("description"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	http.Redirect(w, r, fmt.Sprintf("/tig/%d", newTig.ID), http.StatusSeeOther)
 }

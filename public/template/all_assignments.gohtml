@@ -13,6 +13,14 @@
                         <div class="card-title">
                             All assignments
                         </div>
+                        <div class="card-action">
+                            {{if eq $prod true}}
+                                <a href="https://pedafy.com/tig/new">Create</a>
+                            {{end}}
+                            {{if eq $prod false}}
+                                <a href="/tig/new">Create</a>
+                            {{end}}
+                        </div>
                     </div>
                 </div>
             </div>

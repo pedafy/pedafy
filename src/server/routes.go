@@ -35,10 +35,8 @@ func (s *Server) registerHandlers() {
 	r.Methods(http.MethodGet).Path("/tig").HandlerFunc(s.tigHomeHandler)
 	r.Methods(http.MethodGet).Path("/tig/{id:[0-9]+}").HandlerFunc(s.tigHandler)
 	r.Methods(http.MethodGet).Path("/tig/modify/{id:[0-9]+}").HandlerFunc(s.modifyTigHandler)
-	r.Methods(http.MethodGet).Path("/tig/review/{id:[0-9]+}").HandlerFunc(s.reviewTigHandler)
 	r.Methods(http.MethodGet).Path("/tig/new").HandlerFunc(s.newTigHandler)
 	r.Methods(http.MethodPost).Path("/tig/modify/{id:[0-9]+}").HandlerFunc(s.modifyTigHandlerAPI)
-	r.Methods(http.MethodPost).Path("/tig/review/{id:[0-9]+}").HandlerFunc(s.reviewTigHandlerAPI)
 	r.Methods(http.MethodPost).Path("/tig/new").HandlerFunc(s.newTigHandlerAPI)
 
 	r.Methods(http.MethodGet).Path("/task").HandlerFunc(s.taskHomeHandler)

@@ -96,7 +96,7 @@ func (s *Server) assignmentGetByAssignedOne(assignedID int) ([]Assignment, error
 	return data.Data, err
 }
 
-func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueDate *time.Time, title, description string) (Assignment, error) {
+func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueDate time.Time, title, description string) (Assignment, error) {
 	var data AssignmentData
 
 	client := &http.Client{}
@@ -108,7 +108,7 @@ func (s *Server) assignmentNew(creatorID, assignedID, statusID, taskID int, dueD
 		StatusID:    statusID,
 		Title:       title,
 		Description: description,
-		DueDate:     dueDate,
+		DueDate:     &dueDate,
 	}
 
 	aJSON, _ := json.Marshal(a)
