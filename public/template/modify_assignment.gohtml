@@ -85,7 +85,7 @@
                     </div>
                     {{$statusIDAssignment := $assignment.StatusID}}
                     <div class="input-field col s12 m6">
-                        <select>
+                        <select name="status_id">
                             <option value="" disabled>Choose the status</option>
                             {{range $status}}
                             <option value="{{.ID}}" {{if eq .ID $statusIDAssignment}}selected{{end}}>{{.Name}}</option>
@@ -95,7 +95,7 @@
                     </div>
                     {{$taskIDAssignment := $assignment.TaskID}}
                     <div class="input-field col s12 m6">
-                        <select>
+                        <select name="task_id">
                             <option value="" disabled>Choose the task</option>
                             {{range $tasks}}
                             <option value="{{.ID}}" {{if eq .ID $taskIDAssignment}}selected{{end}}>#{{.ID}} - {{.Title}}</option>
@@ -137,14 +137,15 @@ document.addEventListener('DOMContentLoaded', function () {
     instance.setDate(new Date("{{.Data.DueDate.Year}}", "{{.Data.DueDate.Month}}", "{{.Data.DueDate.Day}}"));
 
     // completion date
-    options = {
-        defaultDate: new Date("{{.Data.AccomplishDate.Year}}", "{{.Data.AccomplishDate.Month}}", "{{.Data.AccomplishDate.Day}}"),
-        setDefaultDate: true
-    };
-    elems = document.querySelector('.accomplishement_date_picker');
-    instance = M.Datepicker.init(elems, options);
-    instance.setDate(new Date("{{.Data.AccomplishDate.Year}}", "{{.Data.AccomplishDate.Month}}", "{{.Data.AccomplishDate.Day}}"));
-
+    {{if .Data.Accomplished}}
+        options = {
+            defaultDate: new Date("{{.Data.AccomplishDate.Year}}", "{{.Data.AccomplishDate.Month}}", "{{.Data.AccomplishDate.Day}}"),
+            setDefaultDate: true
+        };
+        elems = document.querySelector('.accomplishement_date_picker');
+        instance = M.Datepicker.init(elems, options);
+        instance.setDate(new Date("{{.Data.AccomplishDate.Year}}", "{{.Data.AccomplishDate.Month}}", "{{.Data.AccomplishDate.Day}}"));
+    {{end}}
 });
 </script>
 
