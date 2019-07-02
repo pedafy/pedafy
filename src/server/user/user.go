@@ -73,10 +73,11 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) error {
 	sessions[c.Value] = ""
 
 	c = &http.Cookie{
-		Name:   "session",
-		Path:   "/",
-		Value:  "",
-		MaxAge: 0,
+		Name:    "session",
+		Path:    "/",
+		Value:   "",
+		MaxAge:  0,
+		Expires: time.Unix(0, 0),
 	}
 	http.SetCookie(w, c)
 

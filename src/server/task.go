@@ -49,7 +49,7 @@ func (s *Server) taskHomeHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != emailPedago {
+	if loggedIn != nil {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
