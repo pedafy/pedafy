@@ -50,9 +50,20 @@ func (s *Server) registerHandlers() {
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	user, loggedIn := user.GetUser(r)
+	u, loggedIn := user.GetUser(r)
 
-	p := template.NewPage("Pedafy - Home", loggedIn == nil, user, nil)
+	if s.isTokenSet() == false {
+		ctx := appengine.NewContext(r)
+		if err := s.fetchTokenAPI(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		if err := s.initOauth(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		user.Init()
+	}
+
+	p := template.NewPage("Pedafy - Home", loggedIn == nil, u, nil)
 	if err := template.RenderTemplate(w, p, "home.gohtml"); err != nil {
 		log.Fatal(err.Error())
 	}
