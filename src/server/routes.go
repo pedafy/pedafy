@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +54,7 @@ func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
 	u, loggedIn := user.GetUser(r)
 
 	if s.isTokenSet() == false {
-		ctx := appengine.NewContext(r)
+		ctx := context.Background()
 		if err := s.fetchTokenAPI(ctx); err != nil {
 			log.Fatal(err.Error())
 		}
