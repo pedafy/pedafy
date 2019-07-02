@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/pedafy/pedafy/src/datastore"
 	"github.com/pedafy/pedafy/src/server/user"
 
 	"github.com/markbates/goth"
@@ -13,14 +14,12 @@ import (
 )
 
 func (s *Server) initOauth(ctx context.Context) error {
-	// creds, _ := datastore.FindAzureCredentialsInformation(ctx)
-	// // if err != nil {
-	// // 	return err
-	// // }
-	// s.oAuthID = creds.ClientID
-	// s.oAuthSecret = creds.ClientSecret
-	s.oAuthID = "3405088c-5068-4118-b567-eab3450c6779"
-	s.oAuthSecret = "IvV9CyFSYrnQj/gFNf+HChubNT2XcFbIBs1Jhs2XNB0="
+	creds, err := datastore.FindAzureCredentialsInformation(ctx)
+	if err != nil {
+		return err
+	}
+	s.oAuthID = creds.ClientID
+	s.oAuthSecret = creds.ClientSecret
 	s.setOauthProvider()
 	return nil
 }

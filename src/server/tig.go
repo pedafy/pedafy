@@ -28,6 +28,9 @@ type assignmentPageInfo struct {
 	Accomplished   bool
 }
 
+var emailUser = "florent.poinsard@epitech.eu"
+var emailPedago = "florent1.poinsard@epitech.eu"
+
 func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
@@ -38,7 +41,7 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 	var data assignmentPageInfo
 	var templateName string
 
-	if user.Login == "florent.poinsard@epitech.eu" {
+	if user.Login == emailUser {
 		// Student users
 
 		// use real student ID
@@ -71,7 +74,7 @@ func (s *Server) tigHomeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		templateName = "my_assignments"
 
-	} else if user.Login == "florent1.poinsard@epitech.eu" {
+	} else if user.Login == emailPedago {
 		// Helper & Admin users
 
 		as, err := s.assignmentsGetAll()
@@ -161,7 +164,7 @@ func (s *Server) tigHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTigHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -224,7 +227,7 @@ func (s *Server) modifyTigHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -267,7 +270,7 @@ func (s *Server) modifyTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
 func (s *Server) newTigHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -304,7 +307,7 @@ func (s *Server) newTigHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) newTigHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}

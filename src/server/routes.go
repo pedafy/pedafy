@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -47,14 +46,13 @@ func (s *Server) registerHandlers() {
 	r.Methods(http.MethodGet).Path("/task/new").HandlerFunc(s.newTaskHandler)
 	r.Methods(http.MethodPost).Path("/task/new").HandlerFunc(s.newTaskHandlerAPI)
 
-	http.HandleFunc("/_ah/health", healthCheckHandler)
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, r))
 }
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
-	u, loggedIn := user.GetUser(r)
+	user, loggedIn := user.GetUser(r)
 
-	p := template.NewPage("Pedafy - Home", loggedIn == nil, u, nil)
+	p := template.NewPage("Pedafy - Home", loggedIn == nil, user, nil)
 	if err := template.RenderTemplate(w, p, "home.gohtml"); err != nil {
 		log.Fatal(err.Error())
 	}
@@ -85,8 +83,4 @@ func (s *Server) startupHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		user.Init()
 	}
-}
-
-func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "ok")
 }

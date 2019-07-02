@@ -1,11 +1,9 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/joho/godotenv"
 	"github.com/pedafy/pedafy/src/server"
+	"google.golang.org/appengine"
 )
 
 func main() {
@@ -14,6 +12,5 @@ func main() {
 	godotenv.Load("../../.env")
 
 	s.Start()
-	log.Print("Listening on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	appengine.Main()
 }

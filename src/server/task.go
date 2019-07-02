@@ -19,7 +19,7 @@ type taskPageInfo struct {
 func (s *Server) taskHomeHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -49,7 +49,7 @@ func (s *Server) taskHomeHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -83,7 +83,7 @@ func (s *Server) taskHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -117,7 +117,7 @@ func (s *Server) modifyTaskHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
 
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -139,7 +139,7 @@ func (s *Server) modifyTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -161,7 +161,7 @@ func (s *Server) newTaskHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) newTaskHandlerAPI(w http.ResponseWriter, r *http.Request) {
 	user, loggedIn := user.GetUser(r)
-	if loggedIn != nil || user.Login != "florent1.poinsard@epitech.eu" {
+	if loggedIn != nil || user.Login != emailPedago {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
