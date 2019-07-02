@@ -6,6 +6,7 @@ import (
 
 	"google.golang.org/appengine"
 
+	"github.com/pedafy/pedafy/src/server/user"
 	"github.com/pedafy/pedafy/src/template"
 
 	"github.com/pedafy/pedafy/src/datastore"
@@ -37,6 +38,16 @@ func (s *Server) Start() {
 	err := template.Init("./public/template")
 	if err != nil {
 		log.Fatal(err.Error())
+	}
+	if s.isTokenSet() == false {
+		ctx := context.Background()
+		if err := s.fetchTokenAPI(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		if err := s.initOauth(ctx); err != nil {
+			log.Fatal(err.Error())
+		}
+		user.Init()
 	}
 }
 
